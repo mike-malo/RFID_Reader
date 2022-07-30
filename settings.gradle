@@ -1,0 +1,4 @@
+include ':ModuleAPI'
+include ':uhfDemo'
+include ':app'
+rootProject.name = "HCUHF"

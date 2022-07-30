@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+tools:context=".fragment.WriteTagFragment">
+
+<LinearLayout
+    android:layout_margin="6dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/read_bac"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/item_margin"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="@dimen/read_width"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:text="@string/selectBlank"
+            android:textColor="@color/red"
+            android:textSize="@dimen/textSize" />
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/sp_writeBlank"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:entries="@array/write_blank"
+            android:spinnerMode="dropdown" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/item_margin"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="@dimen/read_width"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:text="@string/readPsw"
+            android:textColor="@color/red"
+            android:textSize="@dimen/textSize" />
+
+        <EditText
+            android:id="@+id/et_write_psw"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_psw"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/item_margin"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="@dimen/read_width"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:text="@string/startAddress"
+            android:textColor="@color/red"
+            android:textSize="@dimen/textSize" />
+
+        <EditText
+            android:text="2"
+            android:gravity="center"
+            android:inputType="number"
+            android:digits="@string/number_input_digits"
+            android:id="@+id/et_writeAddress"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:text="@string/word"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+       <!-- <TextView
+            android:layout_marginStart="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:text="@string/len"
+            android:textColor="@color/red"
+            android:textSize="@dimen/textSize" />
+
+        <EditText
+            android:text="6"
+            android:gravity="center"
+            android:inputType="number"
+            android:digits="@string/number_input_digits"
+            android:id="@+id/et_writeLen"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:text="@string/word"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>-->
+    </LinearLayout>
+</LinearLayout>
+<LinearLayout
+    android:layout_margin="6dp"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:textColor="@color/black"
+        android:text="@string/tag_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <EditText
+        android:id="@+id/et_writeData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</LinearLayout>
+
+<Button
+    android:id="@+id/bt_writeTag"
+    android:textSize="@dimen/textSize"
+    android:text="@string/writeTag"
+    android:layout_margin="20dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <CheckBox
+            android:id="@+id/cb_write_filter"
+            android:text="@string/filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textColor="@color/black"
+                android:text="@string/filter_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <EditText
+                android:id="@+id/et_write_filter_Data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+        <LinearLayout
+
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textColor="@color/black"
+                android:text="起始地址："
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <EditText
+                android:textColor="#000000"
+                android:text="32"
+                android:id="@+id/et_write_filter_address"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>

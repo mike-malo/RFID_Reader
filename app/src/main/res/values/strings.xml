@@ -1,0 +1,111 @@
+<resources>
+    <string name="app_name">HCUHF</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="scanTag">扫描</string>
+    <string name="readTag">读标签</string>
+    <string name="writeTag">写标签</string>
+    <string name="lock">锁定</string>
+    <string name="settingTag">设置</string>
+    <string name="lockAndKill">锁定</string>
+    <string name="uhf">UHF</string>
+    <string name="startScan">开始</string>
+    <string name="stopScan">停止</string>
+    <string name="clearData">清除</string>
+    <string name="epc">EPC</string>
+    <string name="time">次数</string>
+    <string name="rssi">RSSI</string>
+    <string name="tagCount">标签个数：</string>
+    <string name="selectBlank">存 储 区：</string>
+    <string name="lockType">锁 类 型：</string>
+    <string name="readPsw">密    码：</string>
+    <string name="blank">块区</string>
+    <string name="hint_psw">00000000</string>
+    <string name="startAddress">起始地址：</string>
+    <string name="len">长度：</string>
+    <string name="word">word</string>
+    <string name="number_input_digits">1234567890</string>
+    <string name="setFilter">指定标签</string>
+    <string name="tag_data">标签数据:</string>
+    <string name="module">工作频段：</string>
+    <string name="getBank">获取频段</string>
+    <string name="setBank">设置频段</string>
+    <string name="getPower">获取功率</string>
+    <string name="setPower">设置功率</string>
+    <string name="power">读写功率：</string>
+    <string name="epc_module">盘存EPC</string>
+    <string name="tid_module">盘存TID</string>
+    <string name="setInventoryModule">设置盘存模式</string>
+    <string name="temperature">模块温度：</string>
+    <string name="getT">获取</string>
+    <string name="filter">过滤</string>
+    <string name="filter_data">过滤数据：</string>
+
+    <string-array name="blank">
+        <item>保留区</item>
+        <item>EPC区</item>
+        <item>TID区</item>
+        <item>USER区</item>
+    </string-array>
+    <string-array name="write_blank">
+        <item>保留区</item>
+        <item>EPC区</item>
+        <item>USER区</item>
+    </string-array>
+
+    <string-array name="lock_type">
+        <item>解锁</item>
+        <item>暂时锁定</item>
+        <item>永久锁定</item>
+    </string-array>
+    <string-array name="lock_bank">
+        <item>访问密码</item>
+        <item>销毁密码</item>
+        <item>EPC区</item>
+        <item>TID区</item>
+        <item>用户区</item>
+    </string-array>
+
+    <string-array name="bank">
+        <item>中国</item>
+        <item>北美</item>
+        <item>日本</item>
+        <item>韩国</item>
+        <item>欧洲</item>
+        <item>欧洲2</item>
+        <item>欧洲3</item>
+        <item>印度</item>
+        <item>加拿大</item>
+        <item>全频段</item>
+        <item>中国2</item>
+    </string-array>
+    <string-array name="power">
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+        <item>21</item>
+        <item>22</item>
+        <item>23</item>
+        <item>24</item>
+        <item>25</item>
+        <item>26</item>
+        <item>27</item>
+        <item>28</item>
+        <item>29</item>
+        <item>30</item>
+
+    </string-array>
+</resources>

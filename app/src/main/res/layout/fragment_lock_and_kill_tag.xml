@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context=".fragment.LockAndKillTagFragment">
+
+    <LinearLayout
+        android:layout_margin="6dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/read_bac"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/item_margin"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="@dimen/read_width"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:text="@string/selectBlank"
+                android:textColor="@color/red"
+                android:textSize="@dimen/textSize" />
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/sp_lockBlank"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:entries="@array/lock_bank"
+                android:spinnerMode="dropdown" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/item_margin"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="@dimen/read_width"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:text="@string/lockType"
+                android:textColor="@color/red"
+                android:textSize="@dimen/textSize" />
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/sp_lockType"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:entries="@array/lock_type"
+                android:spinnerMode="dropdown" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/item_margin"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="@dimen/read_width"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:text="@string/readPsw"
+                android:textColor="@color/red"
+                android:textSize="@dimen/textSize" />
+
+            <EditText
+                android:id="@+id/et_lock_psw"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_psw"
+                android:textColor="@color/black" />
+        </LinearLayout>
+    </LinearLayout>
+    <Button
+        android:id="@+id/bt_lock"
+        android:textSize="@dimen/textSize"
+        android:text="@string/lock"
+        android:layout_margin="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>
