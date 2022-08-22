@@ -38,7 +38,7 @@ public class DeviceConfigManage {
         }
         if(model.equals(Device_HC710S)||model.equals(Device_HC605S)){
             LoggerUtils.d(TAG," 设置uhf串口710s 或 HC605S");
-            uhfUart="/dev/ttysWK1";
+            uhfUart="/dev/ttysWK0";
         }
         if(model.equals(Device_HC706S)){
             LoggerUtils.d(TAG," 设置uhf串口706s");

@@ -1,5 +1,7 @@
 package com.xlzn.hcpda.uhf.analysis;
 
+import android.util.Log;
+
 import com.xlzn.hcpda.ModuleAPI;
 import com.xlzn.hcpda.uhf.analysis.UHFProtocolAnalysisBase.DataFrameInfo;
 import com.xlzn.hcpda.uhf.entity.SelectEntity;
@@ -349,18 +351,21 @@ public class BuilderAnalysisSLR implements IBuilderAnalysis {
             final int ant = 0X0004;//BIT2置位即标签 被盘存到时所用的天线 ID号将会被返回。（逻辑天线号）
             final int tagData=0x0080;//返回嵌入命令内存数据
             final int flag = count | rssi | ant | tagData;
-            senddata[index++] = (flag >> 8) & 0xFF;
-            senddata[index++] = (byte) (flag & 0xFF);
+//            senddata[index++] = (flag >> 8) & 0xFF;
+            senddata[index++] =0x00;
+//            senddata[index++] = (byte) (flag & 0xFF);
+            senddata[index++] = 0x04;
             //1字节OPTION
             senddata[index++] = 0x00;//不启用匹配过滤
             //2字节SEARCHFLAGS,SEARCHFLAGS高字节的低4位表示不停止盘存过程中的停顿时间dd
             //0x10:每工作1秒中盘存时间950毫秒，停顿时间50毫秒
             //0x20:停顿时间100毫秒,0x30:停顿150，0x00:不停顿
-            senddata[index++] = (0x00 | 0x20);
-            //senddata[index++] = 0x04;//todo 0x00
+//            senddata[index++] = (0x00 | 0x20);
+            senddata[index++] = (byte) 0x90;//todo 0x00
 
             if(!isTID) {
-                senddata[index++] = 0x00;
+//                senddata[index++] = 0x00;
+                senddata[index++] = 0x03;
             }else {
                 senddata[index++] = 0x04;
                 //**********************************************
@@ -462,11 +467,147 @@ public class BuilderAnalysisSLR implements IBuilderAnalysis {
         return buildSendData(0XAA, Arrays.copyOf(senddata, index));
 
     }
+
+
+
     /**
-     * 解析接收的开始盘点的指令（快速模式）
+     * 解析接收的开始盘点的指令（多标签手持机模式）
      *
      * @return return
      */
+    public List<UHFTagEntity> analysisFastModeTagInfoReceiveData(DataFrameInfo data){
+
+        //FF 14 AA 00 00 00 04 11 10 30 00 E2 00 53 80 80 04 00 41 12 60 95 87 16 5C   6AD8
+        //FF 数据头
+        //14 数据长度
+        //AA 命令字
+        //00 00 状态
+        //00 04  flag值
+        //11 天线
+        //10 EPC长度，包括 pc值+epc+epcCRC
+        //30 00  PC值
+        //E2 00 53 80 80 04 00 41 12 60 95 87  epc数据
+        //16 5C 标签CRC
+        if (data != null) {
+            //00 87 01 C9 11 00 60 E2 00 34 12 01 2F FC 00 0B 45 DE 87   103000E2000017010B014318405BA1B2F2
+            if (data.status == 0) {
+                byte[] taginfo = data.data;
+                String s = DataConverter.bytesToHex(taginfo);
+                Log.e("TAG", "analysisFastModeTagInfoReceiveData: " +s );
+                UHFTagEntity uhfTagEntity = new UHFTagEntity();
+                int ant = (taginfo[2] & 0xFF) >> 4; //天线
+                int epcLen = (taginfo[3] & 0xFF);   //EPC长度 包括:pc值+epc+epcCRC
+                byte[] pcBytes = new byte[]{
+                        taginfo[4],
+                        taginfo[5]
+                };
+                int epcIdLen = epcLen - 2 - 2;//长度减去2个字节pc和两个字节epccrc
+                byte[] epcBytes = new byte[epcIdLen];
+                for (int m = 0; m < epcIdLen; m++) {
+                    epcBytes[m] = taginfo[6+m];
+                }
+                uhfTagEntity.setAnt(ant);
+                uhfTagEntity.setRssi(0);
+                uhfTagEntity.setCount(1);
+                uhfTagEntity.setEcpHex(DataConverter.bytesToHex(epcBytes));
+                if(uhfTagEntity.getEcpHex()==null){
+                    uhfTagEntity.setEcpHex("");
+                }
+                uhfTagEntity.setPcHex(DataConverter.bytesToHex(pcBytes));
+                List<UHFTagEntity> list = new ArrayList<>();
+                list.add(uhfTagEntity);
+                return list;
+            } //00 07 00 01    01  C9 11   00 80   30 00 E2 00 00 17 01 0B 00 50 17 50 61 70 BB 55
+        }
+        return null;
+    }
+
+    /**
+     * 解析连续盘点数据
+     *
+     * @return return
+     */
+//    @Override
+//    public List<UHFTagEntity> analysisFastModeTagInfoReceiveData(DataFrameInfo data){
+//
+//        //FF 16 AA 00 00   00 07 01 DB 11 10 3000E2000017010B020718205C25378C9A63
+//        //FF 数据头
+//        //16 数据长度
+//        //AA 命令字
+//        //00 00 状态
+//        //______________________纯数据段___________________________________________
+//        //00 07  flag值，和发送的数据一样
+//        //01    标签张数
+//        //DB    RSSI
+//        //11    天线ID ，高4位为发射天线，低4位为接收天线。
+//        //10 EPC长度，包括 pc值+epc+epcCRC
+//        //30 00  PC值
+//        //E2 00 00 17 01 0B 00 46 17 50 61 6E  epc数据
+//        //81 75 标签CRC
+//        //__________________________________________________________________
+//        //58 BD 整个数据CRC
+//        if (data != null) {
+//            //00 87 01 C9 11 00 60 E2 00 34 12 01 2F FC 00 0B 45 DE 87   103000E2000017010B014318405BA1B2F2
+//            if (data.status == 0) {
+//                LoggerUtils.d(TAG,"解析盘点数据："+DataConverter.bytesToHex(data.data));
+//                byte[] taginfo = data.data;
+//                int tagsTotal = taginfo[2] & 0xFF;//标签张数
+//                int statIndex = 3;
+//                List<UHFTagEntity> list = new ArrayList<>();
+//                for (int k = 0; k < tagsTotal; k++) {
+//                    int rssi = taginfo[statIndex++];   //RSSI
+//                    int ant = (taginfo[statIndex++] & 0xFF) >> 4; //天线
+//                    byte[] tidBytes=null;
+//                    int tidLen= ((taginfo[statIndex++] & 0xFF) << 8) | (taginfo[statIndex++] & 0xFF);//嵌入命令的数据
+//                    if(tidLen>0){
+//                        tidLen = (tidLen / 8);
+//                        int starAdd=statIndex;
+//                        int endAdd=starAdd+tidLen;
+//                        tidBytes=Arrays.copyOfRange(taginfo,starAdd,endAdd);
+//                        statIndex=endAdd;
+//                        // LoggerUtils.d(TAG, "解析盘点数据 statIndex："+statIndex);
+//                    }
+//                    UHFTagEntity uhfTagEntity = new UHFTagEntity();
+//                    if(tidBytes!=null){
+//                        uhfTagEntity.setTidHex(DataConverter.bytesToHex(tidBytes));
+//                    }else{
+//                        if(isTID){
+//                            continue;
+//                        }
+//                    }
+//
+//                    int epcLen = (taginfo[statIndex++] & 0xFF);   //EPC长度 包括:pc值+epc+epcCRC
+//                    byte[] pcBytes = new byte[]{
+//                            taginfo[statIndex++],
+//                            taginfo[statIndex++]
+//                    };
+//                    int epcIdLen = epcLen - 2 - 2;
+//                    byte[] epcBytes = new byte[epcIdLen];
+//                    for (int m = 0; m < epcIdLen; m++) {
+//                        epcBytes[m] = taginfo[statIndex++];
+//                    }
+//                    //最后有两个字节的epc校验码，所以加3，就直接跳到下一张标签
+//                    statIndex = statIndex + 2;
+//
+//                    uhfTagEntity.setAnt(ant);
+//                    uhfTagEntity.setRssi(rssi);
+//                    uhfTagEntity.setCount(1);
+//                    uhfTagEntity.setEcpHex(DataConverter.bytesToHex(epcBytes));
+//                    if(uhfTagEntity.getEcpHex()==null){
+//                        uhfTagEntity.setEcpHex("");
+//                    }
+//                    uhfTagEntity.setPcHex(DataConverter.bytesToHex(pcBytes));
+//                    list.add(uhfTagEntity);
+//                }
+//                if(list==null || list.size()<tagsTotal) {
+//                    LoggerUtils.d(TAG, "解析盘点数据异常 tagsTotal：" +tagsTotal  +"  list.size()="+list.size());
+//                }
+//                return list;
+//            } //00 07 00 01    01  C9 11   00 80   30 00 E2 00 00 17 01 0B 00 50 17 50 61 70 BB 55
+//        }
+//        return null;
+//    }
+
     public UHFReaderResult<Boolean> analysisStartFastModeInventoryReceiveData(DataFrameInfo data,boolean isTID) {
         this.isTID=isTID;
         //0xFF+DATALEN+0XAA+STATUS +”Moduletech”+SubCmdHighByte+SubCmdLowByte+data+CRC
@@ -637,91 +778,7 @@ public class BuilderAnalysisSLR implements IBuilderAnalysis {
         return null;
     }
 
-    /**
-     * 解析连续盘点数据
-     *
-     * @return return
-     */
-    @Override
-    public List<UHFTagEntity> analysisFastModeTagInfoReceiveData(DataFrameInfo data){
 
-        //FF 16 AA 00 00   00 07 01 DB 11 10 3000E2000017010B020718205C25378C9A63
-        //FF 数据头
-        //16 数据长度
-        //AA 命令字
-        //00 00 状态
-        //______________________纯数据段___________________________________________
-        //00 07  flag值，和发送的数据一样
-        //01    标签张数
-        //DB    RSSI
-        //11    天线ID ，高4位为发射天线，低4位为接收天线。
-        //10 EPC长度，包括 pc值+epc+epcCRC
-        //30 00  PC值
-        //E2 00 00 17 01 0B 00 46 17 50 61 6E  epc数据
-        //81 75 标签CRC
-        //__________________________________________________________________
-        //58 BD 整个数据CRC
-        if (data != null) {
-            //00 87 01 C9 11 00 60 E2 00 34 12 01 2F FC 00 0B 45 DE 87   103000E2000017010B014318405BA1B2F2
-            if (data.status == 0) {
-                LoggerUtils.d(TAG,"解析盘点数据："+DataConverter.bytesToHex(data.data));
-                byte[] taginfo = data.data;
-                int tagsTotal = taginfo[2] & 0xFF;//标签张数
-                int statIndex = 3;
-                List<UHFTagEntity> list = new ArrayList<>();
-                for (int k = 0; k < tagsTotal; k++) {
-                    int rssi = taginfo[statIndex++];   //RSSI
-                    int ant = (taginfo[statIndex++] & 0xFF) >> 4; //天线
-                    byte[] tidBytes=null;
-                    int tidLen= ((taginfo[statIndex++] & 0xFF) << 8) | (taginfo[statIndex++] & 0xFF);//嵌入命令的数据
-                    if(tidLen>0){
-                        tidLen = (tidLen / 8);
-                        int starAdd=statIndex;
-                        int endAdd=starAdd+tidLen;
-                        tidBytes=Arrays.copyOfRange(taginfo,starAdd,endAdd);
-                        statIndex=endAdd;
-                        // LoggerUtils.d(TAG, "解析盘点数据 statIndex："+statIndex);
-                    }
-                    UHFTagEntity uhfTagEntity = new UHFTagEntity();
-                    if(tidBytes!=null){
-                        uhfTagEntity.setTidHex(DataConverter.bytesToHex(tidBytes));
-                    }else{
-                        if(isTID){
-                            continue;
-                        }
-                    }
-
-                    int epcLen = (taginfo[statIndex++] & 0xFF);   //EPC长度 包括:pc值+epc+epcCRC
-                    byte[] pcBytes = new byte[]{
-                            taginfo[statIndex++],
-                            taginfo[statIndex++]
-                    };
-                    int epcIdLen = epcLen - 2 - 2;
-                    byte[] epcBytes = new byte[epcIdLen];
-                    for (int m = 0; m < epcIdLen; m++) {
-                        epcBytes[m] = taginfo[statIndex++];
-                    }
-                    //最后有两个字节的epc校验码，所以加3，就直接跳到下一张标签
-                    statIndex = statIndex + 2;
-
-                    uhfTagEntity.setAnt(ant);
-                    uhfTagEntity.setRssi(rssi);
-                    uhfTagEntity.setCount(1);
-                    uhfTagEntity.setEcpHex(DataConverter.bytesToHex(epcBytes));
-                    if(uhfTagEntity.getEcpHex()==null){
-                        uhfTagEntity.setEcpHex("");
-                    }
-                    uhfTagEntity.setPcHex(DataConverter.bytesToHex(pcBytes));
-                    list.add(uhfTagEntity);
-                }
-                if(list==null || list.size()<tagsTotal) {
-                    LoggerUtils.d(TAG, "解析盘点数据异常 tagsTotal：" +tagsTotal  +"  list.size()="+list.size());
-                }
-                return list;
-            } //00 07 00 01    01  C9 11   00 80   30 00 E2 00 00 17 01 0B 00 50 17 50 61 70 BB 55
-        }
-        return null;
-    }
     /**
      *  获取模块版本
      *

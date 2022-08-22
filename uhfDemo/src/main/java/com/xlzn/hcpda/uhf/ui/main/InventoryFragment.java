@@ -171,37 +171,34 @@ public class InventoryFragment extends Fragment implements View.OnClickListener 
                                 message.what = 1;
                                 message.obj = tagEntityList.get(k);
                                 handler.sendMessage(message);
-
-                                    Utils.play();
-
+                                Utils.play();
                             }
                         }
                     }
                 }
             });
 
-//            UHFReader.getInstance().setSession(UHFSession.S1);
-
-//            SelectEntity entity = new SelectEntity();
-//            entity.setOption(SelectEntity.OPTION_EPC);
-//            entity.setData("E280");
-//            entity.setLength(16);
-//            entity.setAddress(32);
             UHFReaderResult<Boolean> readerResult = UHFReader.getInstance().startInventory();
-
-
             if (readerResult.getData()) {
                 handler.sendEmptyMessageDelayed(2, 100);
                 startTime = SystemClock.elapsedRealtime();
                 btStartStop.setText(R.string.stop);
                 btnSingle.setEnabled(false);
+
             } else {
                 Toast.makeText(mainActivity, R.string.fail, Toast.LENGTH_SHORT).show();
             }
         } else {
             btStartStop.setText(R.string.start);
             btnSingle.setEnabled(true);
-            UHFReader.getInstance().stopInventory();
+            UHFReaderResult<Boolean> booleanUHFReaderResult = UHFReader.getInstance().stopInventory();
+            if (booleanUHFReaderResult.getResultCode()==0) {
+                SystemClock.sleep(200);
+                for (int i = 0; i < tagEntityList.size(); i++) {
+                    Log.e("TAG", "标签 "+tagEntityList.get(i).getEcpHex()+" 次数: " + tagEntityList.get(i).getCount() );
+                }
+            }
+
             handler.removeMessages(2);
         }
     }
