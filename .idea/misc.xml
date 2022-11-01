@@ -8,6 +8,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/AndroidAppCodeGitee/HCUHF/uhfDemo/src/main/res/layout/activity_main.xml" value="0.24791666666666667" />
+        <entry key="..\:/AndroidAppCodeGitee/HCUHF/uhfDemo/src/main/res/layout/fragment_config.xml" value="0.19739583333333333" />
+        <entry key="..\:/AndroidAppCodeGitee/HCUHF/uhfDemo/src/main/res/layout/fragment_inventory.xml" value="0.19739583333333333" />
+        <entry key="..\:/AndroidAppCodeGitee/HCUHF/uhfDemo/src/main/res/menu/main.xml" value="0.24791666666666667" />
         <entry key="..\:/ProjectCode/HCUHF/uhfDemo/src/main/res/layout/activity_main.xml" value="0.27553763440860213" />
       </map>
     </option>

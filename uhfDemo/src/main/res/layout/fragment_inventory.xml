@@ -95,6 +95,36 @@
         </LinearLayout>
 
         <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:textSize="22sp"
+                android:text="停止时间:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <EditText
+                android:gravity="center"
+                android:text="10"
+                android:inputType="number"
+                android:digits="0123456789"
+                android:id="@+id/et_stopTime"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:textSize="22sp"
+                android:text="秒"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <CheckBox
+                android:id="@+id/cb_stopTime"
+                android:layout_marginStart="10dp"
+                android:textSize="22sp"
+                android:text="定时"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -120,8 +150,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 tools:ignore="MissingConstraints" />
-            <CheckBox
-                android:id="@+id/cbSelectInventory"
+            <Button
+                android:id="@+id/btExport"
                 android:text="@string/check_tag"
                 android:layout_weight="1"
                 android:layout_width="0dp"

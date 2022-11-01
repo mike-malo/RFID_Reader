@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">超高频测试Demo-v1.0.5</string>
+    <string name="app_name">超高频测试Demo-v1.0.9</string>
     <array name="arrPower">
         <item>"5"</item>
         <item>"6"</item>
@@ -94,7 +94,7 @@
     <string name="start">开始盘点</string>
     <string name="one">单次盘点</string>
     <string name="clear">清空</string>
-    <string name="check_tag">指定标签</string>
+    <string name="check_tag">导出</string>
     <string name="password">访问密码:</string>
     <string name="destory">销毁</string>
     <string name="lock_area">锁的区域:</string>
@@ -124,7 +124,7 @@
     <string name="firmware_ver">固件版本:</string>
     <string name="temperature">模块温度:</string>
     <string name="api">API版本</string>
-    <string name="app">APP版本</string>
+    <string name="app">模块型号</string>
     <string name="temperaturem">模块温度</string>
     <string name="firm">固件版本</string>
 

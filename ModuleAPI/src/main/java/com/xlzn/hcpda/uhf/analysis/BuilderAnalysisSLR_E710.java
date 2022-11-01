@@ -42,7 +42,8 @@ public class BuilderAnalysisSLR_E710 extends BuilderAnalysisSLR {
             final int rssi = 0x0002;//BIT1置位即标签的RSSI信号值将会被返回
             final int ant = 0X0004;//BIT2置位即标签 被盘存到时所用的天线 ID号将会被返回。（逻辑天线号）
             final int tagData=0x0080;//返回嵌入命令内存数据
-            final int flag = count | rssi | ant | tagData;
+//            final int flag = count | rssi | ant | tagData;
+            final int flag = rssi | ant ;
             senddata[index++] = (flag >> 8) & 0xFF;
             senddata[index++] = (byte) (flag & 0xFF);
             //1字节OPTION
@@ -52,7 +53,6 @@ public class BuilderAnalysisSLR_E710 extends BuilderAnalysisSLR {
             //0x20:停顿时间100毫秒,0x30:停顿150，0x00:不停顿
             senddata[index++] = (0x00 | 0x10);
             //senddata[index++] = 0x04;//todo 0x00
-
             if(!isTID) {
                 senddata[index++] = 0x00;
             }else {
@@ -174,7 +174,7 @@ public class BuilderAnalysisSLR_E710 extends BuilderAnalysisSLR {
         //0xFF+DATALEN+0XAA+STATUS +”Moduletech”+SubCmdHighByte+SubCmdLowByte+data+CRC
         if (data != null) {
             if (data.status == 00) {
-                LoggerUtils.d(TAG, "开始盘点指令返回Data:" + DataConverter.bytesToHex(data.data));
+                LoggerUtils.d(TAG, "E710开始盘点指令返回Data:" + DataConverter.bytesToHex(data.data));
                 if ((data.data[10] & 0xFF) == 0xAA && (data.data[11] & 0xFF) == 0x58) {
                     return new UHFReaderResult<Boolean>(UHFReaderResult.ResultCode.CODE_SUCCESS, "", true);
                 }

@@ -25,6 +25,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
+import com.xlzn.hcpda.DeviceConfigManage;
 import com.xlzn.hcpda.ModuleAPI;
 import com.xlzn.hcpda.uhf.entity.UHFReaderResult;
 import com.xlzn.hcpda.uhf.entity.UHFVersionInfo;
@@ -54,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Utils.loadSoundPool(this);
+
+        Log.e(TAG, "onCreate: " +Build.FINGERPRINT );
         ViewPager viewPager = findViewById(R.id.view_pager);
         TabLayout tabs = findViewById(R.id.tabs);
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -82,10 +85,11 @@ public class MainActivity extends AppCompatActivity {
                         }
                         break;
                     case R.id.item_apiVersion:
-                            Toast.makeText(MainActivity.this,getString(R.string.api)+ ModuleAPI.getVersionCode, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, getString(R.string.api) + ModuleAPI.getVersionCode, Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.item_appVersion:
-                        Toast.makeText(MainActivity.this,getString(R.string.app)+ BuildConfig.VERSION_NAME, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(MainActivity.this, getString(R.string.app) + BuildConfig.VERSION_NAME, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, getString(R.string.app) +":"+ DeviceConfigManage.module_type, Toast.LENGTH_SHORT).show();
                         break;
                 }
                 return true;
@@ -111,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(fragmentPagerAdapter);
         //绑定tab和frment
         tabs.setupWithViewPager(viewPager);
-        LoggerUtils.d(TAG,"demo 启动");
+        LoggerUtils.d(TAG, "demo 启动");
     }
 
     @Override
@@ -124,8 +128,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        Log.e(TAG, "onKeyDown: " + keyCode );
-        if (event.getRepeatCount() == 0 && keyCode == 293 || keyCode == 290|| keyCode == 287) {
+        Log.e(TAG, "onKeyDown: " + keyCode);
+        if (event.getRepeatCount() == 0 && keyCode == 293 || keyCode == 290 || keyCode == 287) {
             if (keyDown != null) {
                 keyDown.onKeyDown(keyCode);
             }
@@ -158,7 +162,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 //        requestPermission();
-
 //        HcPowerCtrl ctrl = new HcPowerCtrl();
 //        ctrl.identityPower(1);
         new OpenTask().execute();
@@ -203,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
             if (result.getResultCode() == UHFReaderResult.ResultCode.CODE_SUCCESS) {
 //                UHFReader.getInstance().setSession(UHFSession.S1);
                 if (UHFReaderSLR.getInstance().is5300) {
-                    Log.e(TAG, "onPostExecute: 省电模式"  );
+                    Log.e(TAG, "onPostExecute: 省电模式");
                     UHFReader.getInstance().setInventoryModeForPower(InventoryModeForPower.POWER_SAVING_MODE);
                 }
                 UHFReader.getInstance().setPower(30);

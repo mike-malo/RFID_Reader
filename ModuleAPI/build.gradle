@@ -9,13 +9,13 @@ android {
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 31
-        versionCode 1
-        versionName "1.0.3"
+        versionCode 2
+        versionName "1.0.4"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
         externalNativeBuild {
             cmake {
-                abiFilters    "arm64-v8a" //abi体系结构下的so库
+                abiFilters "arm64-v8a" //abi体系结构下的so库
             }
         }
     }
@@ -48,17 +48,17 @@ android {
                     outputFileName = "HC_${versionCodeA()}_${releaseTime()}.aar"
                 }
             }
-            buildConfigField("int","API_VERSION","${releaseTime()}")
+            buildConfigField("int", "API_VERSION", "${releaseTime()}")
         }
         debug {
             signingConfig signingConfigs.debug
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField("int","API_VERSION","${releaseTime()}")
+            buildConfigField("int", "API_VERSION", "${releaseTime()}")
         }
     }
-    sourceSets{
-        main{
+    sourceSets {
+        main {
             jni.srcDirs = ['src/main/jni']
             jniLibs.srcDirs = ['src/main/jni/libs']
             java.srcDirs = ['src/main/java']
@@ -80,8 +80,11 @@ android {
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.google.android.material:material:1.1.0'
-    implementation files('libs\\classes.jar')
 
+    implementation files('libs\\classes.jar')
+    implementation files('libs\\IGLBarDecoder.jar')
+    implementation files('libs\\jxl.jar')
+    implementation files('libs\\xUtils-2.5.5.jar')
 }
 
 static def releaseTime() {
@@ -89,9 +92,9 @@ static def releaseTime() {
 }
 
 static def versionName() {
-    "\"v1.0.3\""
+    "\"v1.0.4\""
 }
 
 static def versionCodeA() {
-    "v1.0.3"
+    "v1.0.4"
 }

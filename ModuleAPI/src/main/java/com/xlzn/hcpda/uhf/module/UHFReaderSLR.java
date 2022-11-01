@@ -83,9 +83,10 @@ public class UHFReaderSLR implements IUHFReader {
             UHFProtocolAnalysisBase.DataFrameInfo dataFrameInfo = sendAndReceiveData(builderAnalysisSLR.makeGetVersionSendData());
             verInfo = builderAnalysisSLR.analysisVersionData(dataFrameInfo);
             if (verInfo.getResultCode() == UHFReaderResult.ResultCode.CODE_SUCCESS) {
-                if (verInfo.getData().getHardwareVersion().startsWith("31")) {
+                if (verInfo.getData().getHardwareVersion().startsWith("31")||verInfo.getData().getHardwareVersion().startsWith("33")) {
                     builderAnalysisSLR = new BuilderAnalysisSLR_E710();
                     LoggerUtils.d(TAG,"是E710啊----");
+                    DeviceConfigManage.module_type = "E710";
                 }
                 break;
             }
@@ -103,17 +104,28 @@ public class UHFReaderSLR implements IUHFReader {
             if ( hver.startsWith("A1")) {
                 //SLR1200 固件版本:20200703  硬件版本=A1000201
                LoggerUtils.d(TAG,"R2000 协议构建");
+                DeviceConfigManage.module_type = "R2000";
                 is5300 = false;
                 iuhfReader = new UHFReaderSLR1200(uhfProtocolAnalysisSLR, builderAnalysisSLR);
-            } else if (hver.startsWith("31")) {
+            } else if (hver.startsWith("31")||hver.startsWith("33")) {
                 LoggerUtils.d(TAG,"E710 协议构建");
                 //其他模块
                 //e710 硬件版本:31000000\固件版本:20220531
                 // iuhfReader=new ...
+                if (hver.startsWith("33")) {
+                    DeviceConfigManage.module_type = "E310";
+                } else {
+                    DeviceConfigManage.module_type = "E710";
+                }
                 is5300 = false;
                 iuhfReader = new UHFReaderSLR1200(uhfProtocolAnalysisSLR, builderAnalysisSLR);
-            } else if ( hver.startsWith("A6")||hver.startsWith("A3")) {
+            } else if (hver.startsWith("A6")||hver.startsWith("A3")) {
                 LoggerUtils.d(TAG,"5300 协议构建");
+                if (hver.startsWith("A6")) {
+                    DeviceConfigManage.module_type = "5100";
+                } else {
+                    DeviceConfigManage.module_type = "5300";
+                }
                 // 5300  固件版本:20160401  硬件版本=A6000001
                 is5300 = true;
                 iuhfReader = new UHFReaderSLR1200(uhfProtocolAnalysisSLR, builderAnalysisSLR);

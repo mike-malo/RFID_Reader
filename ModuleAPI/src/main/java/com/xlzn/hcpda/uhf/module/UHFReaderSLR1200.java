@@ -39,6 +39,7 @@ public class UHFReaderSLR1200 extends UHFReaderSLRBase implements IUHFReader {
             return new UHFReaderResult(UHFReaderResult.ResultCode.CODE_SUCCESS,"",true);
         }else{
             //以下是快速模式
+            LoggerUtils.d(TAG,"快速模式，是否需要TID " + isTid);
             byte[] data= builderAnalysisSLR.makeStartFastModeInventorySendData(selectEntity,isTid);
             UHFProtocolAnalysisBase.DataFrameInfo dataFrameInfo=sendAndReceiveData(data);
             UHFReaderResult<Boolean> uhfReaderResult=builderAnalysisSLR.analysisStartFastModeInventoryReceiveData(dataFrameInfo,isTid);
@@ -207,6 +208,12 @@ public class UHFReaderSLR1200 extends UHFReaderSLRBase implements IUHFReader {
                             }
                         }
                     }else {
+                        //勾选了TID
+                        //FF1FAA4D6F64756C6574656368AA480006009004010928000000020000000006C6BBD321
+
+                        // 未勾选TID
+                        //FF13AA4D6F64756C6574656368AA4800060090038BBB97DA
+
                         sleep(10);
                         LoggerUtils.d(TAG,"发送数据失败");
                     }

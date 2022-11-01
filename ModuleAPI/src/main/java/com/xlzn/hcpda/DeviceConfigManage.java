@@ -14,6 +14,7 @@ public class DeviceConfigManage {
     public static String SLR1200 = "R2000";
     public static String SLRE710 = "E710";
     public static String SLR5300 = "R5300";
+    public static String module_type = "R2000";
     private UHFConfig uhfConfig=null;
     public enum Platform{
          MTK,
@@ -38,7 +39,7 @@ public class DeviceConfigManage {
         }
         if(model.equals(Device_HC710S)||model.equals(Device_HC605S)){
             LoggerUtils.d(TAG," 设置uhf串口710s 或 HC605S");
-            uhfUart="/dev/ttysWK0";
+            uhfUart="/dev/ttysWK1";
         }
         if(model.equals(Device_HC706S)){
             LoggerUtils.d(TAG," 设置uhf串口706s");

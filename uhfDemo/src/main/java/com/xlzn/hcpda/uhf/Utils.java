@@ -13,6 +13,7 @@ public class Utils {
     private static Context context;
     public static void loadSoundPool(Context context1) {
         context=context1;
+
         try {
             soundPool = new SoundPool(10, AudioManager.STREAM_MUSIC, 10);
             soundID =soundPool.load(context, R.raw.dingdj5, 10);

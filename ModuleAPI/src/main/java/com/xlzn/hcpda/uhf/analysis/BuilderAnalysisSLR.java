@@ -111,6 +111,8 @@ public class BuilderAnalysisSLR implements IBuilderAnalysis {
     @Override
     public byte[] makeInventorySelectEntity(SelectEntity selectEntity) {
         //FF+DATALEN+AA+”Moduletech”+AA+4C+data+SubCrc+bb+CRC
+
+
         byte[] senddata = new byte[512];
         byte[] moduletech = "Moduletech".getBytes();
         //************Moduletech*************
@@ -274,8 +276,6 @@ public class BuilderAnalysisSLR implements IBuilderAnalysis {
         for(int k=0;k<len;k++){
             data[14+k]=byteData[k];
         }
-
-
         return buildSendData(0x22, data);
     }
 
@@ -354,7 +354,7 @@ public class BuilderAnalysisSLR implements IBuilderAnalysis {
 //            senddata[index++] = (flag >> 8) & 0xFF;
             senddata[index++] =0x00;
 //            senddata[index++] = (byte) (flag & 0xFF);
-            senddata[index++] = 0x04;
+            senddata[index++] = 0x06;
             //1字节OPTION
             senddata[index++] = 0x00;//不启用匹配过滤
             //2字节SEARCHFLAGS,SEARCHFLAGS高字节的低4位表示不停止盘存过程中的停顿时间dd
@@ -367,6 +367,7 @@ public class BuilderAnalysisSLR implements IBuilderAnalysis {
 //                senddata[index++] = 0x00;
                 senddata[index++] = 0x03;
             }else {
+                Log.e(TAG, "makeStartFastModeInventorySendData:需要TID "  );
                 senddata[index++] = 0x04;
                 //**********************************************
                 //嵌入命令数量，目前该值只能为1.
@@ -476,8 +477,18 @@ public class BuilderAnalysisSLR implements IBuilderAnalysis {
      * @return return
      */
     public List<UHFTagEntity> analysisFastModeTagInfoReceiveData(DataFrameInfo data){
+        //今天的06指令
+        //                     RSSI   天线   EPC长度   PC
+        //FF 15 AA 00 00 00 06 D8     11     10        34 00   7A 7A 32 38 2D 30 30 30 30 39 39 00 E1 8A 8052
+
+        //E710返回
+        //FF 18 AA 00 00 00 87 01 C4 01 00 00 10 34 00 7A 7A 32 38 2D 30 30 30 30 39 39 00 E1 8A 6E19
+
 
         //FF 14 AA 00 00 00 04 11 10 30 00 E2 00 53 80 80 04 00 41 12 60 95 87 16 5C   6AD8
+
+
+
         //FF 数据头
         //14 数据长度
         //AA 命令字
@@ -490,24 +501,28 @@ public class BuilderAnalysisSLR implements IBuilderAnalysis {
         //16 5C 标签CRC
         if (data != null) {
             //00 87 01 C9 11 00 60 E2 00 34 12 01 2F FC 00 0B 45 DE 87   103000E2000017010B014318405BA1B2F2
+            //00 87 01 BD 01 00 00 1030001DDD2CCC0000501158456DA117B9
             if (data.status == 0) {
                 byte[] taginfo = data.data;
                 String s = DataConverter.bytesToHex(taginfo);
                 Log.e("TAG", "analysisFastModeTagInfoReceiveData: " +s );
                 UHFTagEntity uhfTagEntity = new UHFTagEntity();
-                int ant = (taginfo[2] & 0xFF) >> 4; //天线
-                int epcLen = (taginfo[3] & 0xFF);   //EPC长度 包括:pc值+epc+epcCRC
+                int ant = (taginfo[3] & 0xFF) >> 4; //天线
+                int epcLen = (taginfo[4] & 0xFF);   //EPC长度 包括:pc值+epc+epcCRC
                 byte[] pcBytes = new byte[]{
-                        taginfo[4],
-                        taginfo[5]
+                        taginfo[5],
+                        taginfo[6]
                 };
                 int epcIdLen = epcLen - 2 - 2;//长度减去2个字节pc和两个字节epccrc
                 byte[] epcBytes = new byte[epcIdLen];
                 for (int m = 0; m < epcIdLen; m++) {
-                    epcBytes[m] = taginfo[6+m];
+                    epcBytes[m] = taginfo[7+m];
                 }
                 uhfTagEntity.setAnt(ant);
-                uhfTagEntity.setRssi(0);
+                byte b = taginfo[2];
+                int flag=(int) b;
+                uhfTagEntity.setRssi(flag);
+
                 uhfTagEntity.setCount(1);
                 uhfTagEntity.setEcpHex(DataConverter.bytesToHex(epcBytes));
                 if(uhfTagEntity.getEcpHex()==null){
@@ -523,13 +538,12 @@ public class BuilderAnalysisSLR implements IBuilderAnalysis {
     }
 
     /**
-     * 解析连续盘点数据
+     * 解析连续盘点数据-之前的快速模式
      *
      * @return return
      */
 //    @Override
 //    public List<UHFTagEntity> analysisFastModeTagInfoReceiveData(DataFrameInfo data){
-//
 //        //FF 16 AA 00 00   00 07 01 DB 11 10 3000E2000017010B020718205C25378C9A63
 //        //FF 数据头
 //        //16 数据长度
