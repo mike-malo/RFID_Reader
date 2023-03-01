@@ -80,4 +80,7 @@ public interface IUHFReader {
     public UHFReaderResult<Boolean> lock(String password, LockMembankEnum hexMask, LockActionEnum hexAction, SelectEntity selectEntity);
 
     public UHFReaderResult<Boolean> setBaudRate(int baudRate);
+
+    public UHFReaderResult<Boolean> setFrequencyPoint(int baudRate);
+    public UHFReaderResult<Boolean> setRFLink(int mode);
 }

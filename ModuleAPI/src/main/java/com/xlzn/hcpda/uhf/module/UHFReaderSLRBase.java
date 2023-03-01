@@ -1,5 +1,6 @@
 package com.xlzn.hcpda.uhf.module;
 import android.content.Context;
+import android.util.Log;
 
 import com.xlzn.hcpda.uhf.analysis.UHFProtocolAnalysisBase.DataFrameInfo;
 import com.xlzn.hcpda.uhf.entity.SelectEntity;
@@ -17,7 +18,7 @@ import com.xlzn.hcpda.uhf.interfaces.OnInventoryDataListener;
 import com.xlzn.hcpda.uhf.serialport.UHFSerialPort;
 
 //芯联模块UHF
-  abstract class UHFReaderSLRBase extends UHFReaderBase implements IUHFReader {
+abstract class UHFReaderSLRBase extends UHFReaderBase implements IUHFReader {
     private String TAG="UHFReaderSLRBase";
     //UHF协议解析
     protected IUHFProtocolAnalysis uhfProtocolAnalysisSLR=null;
@@ -35,16 +36,16 @@ import com.xlzn.hcpda.uhf.serialport.UHFSerialPort;
     }
     @Override
     public UHFReaderResult connect(Context context) {
-         return null;
+        return null;
     }
 
     @Override
     public UHFReaderResult disConnect() {
-         return  null;
+        return  null;
     }
     @Override
     public UHFReaderResult<Boolean> setInventoryModeForPower(InventoryModeForPower modeForPower) {
-         InventoryMode=modeForPower;
+        InventoryMode=modeForPower;
         return new UHFReaderResult<Boolean>(UHFReaderResult.ResultCode.CODE_SUCCESS,"",true);
     }
 
@@ -142,18 +143,31 @@ import com.xlzn.hcpda.uhf.serialport.UHFSerialPort;
         DataFrameInfo dataFrameInfo=sendAndReceiveData(builderAnalysisSLR.makeSetBaudRate(baudRate));
         return builderAnalysisSLR.analysisSetBaudRateResultData(dataFrameInfo);
     }
-    //发送数据到模块
+    @Override
+    public UHFReaderResult<Boolean> setFrequencyPoint(int frequencyPoint) {
+        DataFrameInfo dataFrameInfo=sendAndReceiveData(builderAnalysisSLR.makeSetFrequencyPoint(frequencyPoint));
+        return builderAnalysisSLR.analysisSetFrequencyPointResultData(dataFrameInfo);
+    }
+    @Override
+    public UHFReaderResult<Boolean> setRFLink(int mode) {
+        Log.e("TAG", "setRFLink: 发送RFLINK"  );
+        DataFrameInfo dataFrameInfo=sendAndReceiveData(builderAnalysisSLR.makeSetRFLink(mode));
+        return builderAnalysisSLR.analysisSetRFLinkResultData(dataFrameInfo);
+    }
+
+
+    //发送数据到模块z
     protected boolean sendData(byte[] data){
-       return UHFSerialPort.getInstance().send(data);
+        return UHFSerialPort.getInstance().send(data);
     }
     //发送接收数据
     protected DataFrameInfo sendAndReceiveData(byte[] sData){
-       if(!sendData(sData)){
-           return null;
-       }
-       int timeOut=1000;
-       int cmd= sData[2]&0xFF;
-       return uhfProtocolAnalysisSLR.getOtherInfo(cmd,timeOut);
+        if(!sendData(sData)){
+            return null;
+        }
+        int timeOut=1000;
+        int cmd= sData[2]&0xFF;
+        return uhfProtocolAnalysisSLR.getOtherInfo(cmd,timeOut);
     }
 
 

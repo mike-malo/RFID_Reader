@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">超高频测试Demo-v1.0.9</string>
+    <string name="app_name">超高频测试Demo-v1.6</string>
     <array name="arrPower">
         <item>"5"</item>
         <item>"6"</item>
@@ -31,7 +31,67 @@
         <item>"32"</item>
         <item>"33"</item>
     </array>
+    <array name="arrRFLink">
+        <item>"Tari=7.5us/PR_ASK/FM0/640KHz"</item>
+        <item>"Tari=7.5us/PR_ASK/Miller2/640KHz"</item>
+        <item>"Tari=20us/PR_ASK/Miller4/250KHz"</item>
+        <item>"Tari=20us/PR_ASK/Miller8/160KHz"</item>
 
+
+
+    </array>
+    <array name="arrPoint">
+        <item>"902750"</item>
+        <item>"903250"</item>
+        <item>"903750"</item>
+        <item>"904250"</item>
+        <item>"904750"</item>
+        <item>"905250"</item>
+        <item>"905750"</item>
+        <item>"906250"</item>
+        <item>"906750"</item>
+        <item>"907250"</item>
+        <item>"907750"</item>
+        <item>"908250"</item>
+        <item>"908750"</item>
+        <item>"909250"</item>
+        <item>"909750"</item>
+        <item>"910250"</item>
+        <item>"910750"</item>
+        <item>"911250"</item>
+        <item>"911750"</item>
+        <item>"912250"</item>
+        <item>"912750"</item>
+        <item>"913250"</item>
+        <item>"913750"</item>
+        <item>"914250"</item>
+        <item>"914750"</item>
+        <item>"915250"</item>
+        <item>"915750"</item>
+        <item>"916250"</item>
+        <item>"916750"</item>
+        <item>"917250"</item>
+        <item>"917750"</item>
+        <item>"918250"</item>
+        <item>"918750"</item>
+        <item>"919250"</item>
+        <item>"919750"</item>
+        <item>"920250"</item>
+        <item>"920750"</item>
+        <item>"921250"</item>
+        <item>"921750"</item>
+        <item>"922250"</item>
+        <item>"922750"</item>
+        <item>"923250"</item>
+        <item>"923750"</item>
+        <item>"924250"</item>
+        <item>"924750"</item>
+        <item>"925250"</item>
+        <item>"925750"</item>
+        <item>"926250"</item>
+        <item>"926750"</item>
+
+    </array>
     <array name="arrFrequencyBand">
         <item>北美（902-928）</item>
         <item>中国1（920-925）</item>
@@ -85,7 +145,7 @@
     <string name="set_band">设置频段</string>
     <string name="get_band">获取频段</string>
     <string name="set_session">设置Session</string>
-    <string name="get_session" translatable="false">获取Session</string>
+    <string name="get_session"  >获取Session</string>
     <string name="sn">序号</string>
     <string name="count">次数</string>
     <string name="tag_count">标签张数:</string>
@@ -94,7 +154,7 @@
     <string name="start">开始盘点</string>
     <string name="one">单次盘点</string>
     <string name="clear">清空</string>
-    <string name="check_tag">导出</string>
+    <string name="check_tag">指定标签</string>
     <string name="password">访问密码:</string>
     <string name="destory">销毁</string>
     <string name="lock_area">锁的区域:</string>
@@ -127,6 +187,27 @@
     <string name="app">模块型号</string>
     <string name="temperaturem">模块温度</string>
     <string name="firm">固件版本</string>
+    <string name="export">导出</string>
+    <string name="tiplen">密码长度必须是4个字节的十六进制数据!</string>
+    <string name="killerr">销毁失败!</string>
+    <string name="successKill">销毁成功!</string>
+    <string name="selectTag">选择指定标签</string>
+    <string name="sures">确定</string>
+    <string name="cancles">取消</string>
+    <string name="datanonull">数据不能为空!</string>
+    <string name="nolong">数据和长度不匹配!</string>
+    <string name="stop_time">停止时间:</string>
+    <string name="s">秒</string>
+    <string name="set_time">定时</string>
+    <string name="areas">区 域:</string>
+    <string name="start_addr">起始地址:</string>
+    <string name="length">数据长度:</string>
+    <string name="datas">数 据:</string>
+    <string name="set_point">设置频点</string>
+    <string name="get_point">获取频点</string>
+    <string name="set_rf_link">设置链路</string>
+    <string name="get_rf_link">获取链路</string>
+    <string name="write_zh">中文写入</string>
 
 </resources>
 

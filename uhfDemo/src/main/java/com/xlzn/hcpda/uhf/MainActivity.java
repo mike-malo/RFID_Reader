@@ -36,6 +36,7 @@ import com.xlzn.hcpda.uhf.ui.main.FragmentPagerAdapter;
 import com.xlzn.hcpda.uhf.ui.main.InventoryFragment;
 import com.xlzn.hcpda.uhf.ui.main.KillFragment;
 import com.xlzn.hcpda.uhf.ui.main.LockFragment;
+import com.xlzn.hcpda.uhf.ui.main.MyFragment;
 import com.xlzn.hcpda.uhf.ui.main.ReadFragment;
 import com.xlzn.hcpda.uhf.ui.main.WriteFragment;
 import com.xlzn.hcpda.utils.LoggerUtils;
@@ -47,9 +48,9 @@ public class MainActivity extends AppCompatActivity {
     private String TAG = "TAG";
     private List<Fragment> datas = new ArrayList<>();
     private List<String> titles = new ArrayList<>();
-    private KeyDown keyDown = null;
 
-
+    FragmentPagerAdapter fragmentPagerAdapter;
+    ViewPager viewPager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         Utils.loadSoundPool(this);
 
         Log.e(TAG, "onCreate: " +Build.FINGERPRINT );
-        ViewPager viewPager = findViewById(R.id.view_pager);
+          viewPager = findViewById(R.id.view_pager);
         TabLayout tabs = findViewById(R.id.tabs);
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
@@ -110,12 +111,13 @@ public class MainActivity extends AppCompatActivity {
         titles.add(getString(R.string.lock));
         titles.add(getString(R.string.destory));
         //自定义类传递数据
-        FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager(), datas, titles);
+         fragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager(), datas, titles);
         //设置配适器
         viewPager.setAdapter(fragmentPagerAdapter);
         //绑定tab和frment
         tabs.setupWithViewPager(viewPager);
         LoggerUtils.d(TAG, "demo 启动");
+
     }
 
     @Override
@@ -128,11 +130,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        Log.e(TAG, "onKeyDown: " + keyCode);
-        if (event.getRepeatCount() == 0 && keyCode == 293 || keyCode == 290 || keyCode == 287) {
-            if (keyDown != null) {
-                keyDown.onKeyDown(keyCode);
-            }
+        Log.e(TAG, "onKeyDown:  " + keyCode);
+        if (event.getRepeatCount() == 0 && keyCode == 293 || keyCode == 290 || keyCode == 287|| keyCode == 286) {
+
+                MyFragment myFragment = (MyFragment) fragmentPagerAdapter.getItem(viewPager.getCurrentItem());
+                myFragment.onKeyDownTo(keyCode);
+
             return true;
         }
         return super.onKeyDown(keyCode, event);
@@ -145,9 +148,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    public void setkeyDown(KeyDown keyDown) {
-        this.keyDown = keyDown;
-    }
+
 
     @Override
     protected void onPause() {
@@ -161,17 +162,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-//        requestPermission();
-//        HcPowerCtrl ctrl = new HcPowerCtrl();
-//        ctrl.identityPower(1);
+
         new OpenTask().execute();
     }
 
 
     private void close() {
-        Log.e(TAG, "close ");
-//        HcPowerCtrl ctrl = new HcPowerCtrl();
-//        ctrl.identityPower(0);
+
         UHFReader.getInstance().disConnect();
 
     }
@@ -209,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.e(TAG, "onPostExecute: 省电模式");
                     UHFReader.getInstance().setInventoryModeForPower(InventoryModeForPower.POWER_SAVING_MODE);
                 }
-                UHFReader.getInstance().setPower(30);
+                UHFReader.getInstance().setPower(HcPreferences.getInstance().getInt(getApplicationContext(), "pda", "power"));
                 Toast.makeText(MainActivity.this, R.string.success, Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(MainActivity.this, R.string.fail, Toast.LENGTH_SHORT).show();
@@ -229,9 +226,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public interface KeyDown {
-        public void onKeyDown(int keyCode);
-    }
 
 
 }

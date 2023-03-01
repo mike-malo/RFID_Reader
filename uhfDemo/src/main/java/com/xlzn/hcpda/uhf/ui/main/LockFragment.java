@@ -16,7 +16,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import com.xlzn.hcpda.uhf.MainActivity;
 import com.xlzn.hcpda.uhf.R;
@@ -27,7 +26,7 @@ import com.xlzn.hcpda.uhf.enums.LockActionEnum;
 import com.xlzn.hcpda.uhf.enums.LockMembankEnum;
 
 
-public class LockFragment extends Fragment implements View.OnClickListener{
+public class LockFragment extends MyFragment implements View.OnClickListener{
 
     private MainActivity  mainActivity;
     private EditText etPWDLock;

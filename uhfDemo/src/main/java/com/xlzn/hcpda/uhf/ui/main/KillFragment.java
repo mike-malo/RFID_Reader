@@ -16,7 +16,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import com.xlzn.hcpda.uhf.MainActivity;
 import com.xlzn.hcpda.uhf.R;
@@ -25,7 +24,7 @@ import com.xlzn.hcpda.uhf.entity.SelectEntity;
 import com.xlzn.hcpda.uhf.entity.UHFReaderResult;
 
 
-public class KillFragment extends Fragment implements View.OnClickListener{
+public class KillFragment extends MyFragment implements View.OnClickListener{
     private MainActivity  mainActivity;
     private EditText etPWDKill;
     private CheckBox cbSelectKill;
@@ -55,7 +54,7 @@ public class KillFragment extends Fragment implements View.OnClickListener{
                 if (!TextUtils.isEmpty(etPWDKill.getText())) {
                     password = etPWDKill.getText().toString();
                     if (password.length() != 8) {
-                        Toast.makeText(mainActivity, "密码长度必须是4个字节的十六进制数据!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mainActivity, R.string.tiplen, Toast.LENGTH_SHORT).show();
                         return;
                     }
                 }
@@ -69,10 +68,12 @@ public class KillFragment extends Fragment implements View.OnClickListener{
                 }
 
                 if (readerResult.getResultCode() != UHFReaderResult.ResultCode.CODE_SUCCESS) {
-                    Toast.makeText(mainActivity, "销毁失败!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mainActivity,
+                            R.string.killerr,
+                            Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Toast.makeText(mainActivity, "销毁成功!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mainActivity, R.string.successKill, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.cbSelectKill:
                 if (cbSelectKill.isChecked()) {
@@ -96,9 +97,9 @@ public class KillFragment extends Fragment implements View.OnClickListener{
             etdata.setText(selectEntity.getData()+"");
         }
 
-        final AlertDialog dialog = new AlertDialog.Builder(mainActivity).setView(view).setTitle("选择指定标签")
-                .setPositiveButton("确定", null)
-                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+        final AlertDialog dialog = new AlertDialog.Builder(mainActivity).setView(view).setTitle(R.string.selectTag)
+                .setPositiveButton(R.string.sures, null)
+                .setNegativeButton(R.string.cancles, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
@@ -132,12 +133,14 @@ public class KillFragment extends Fragment implements View.OnClickListener{
                 }
 
                 if(data==null){
-                    Toast.makeText(mainActivity,"数据不能为空!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mainActivity,
+                            R.string.datanonull,
+                            Toast.LENGTH_SHORT).show();
                     cbSelectKill.setChecked(false);
                     return;
                 }
                 if(data.length()/2 < bytesLen){
-                    Toast.makeText(mainActivity,"数据和长度不匹配!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mainActivity, R.string.nolong, Toast.LENGTH_SHORT).show();
                     cbSelectKill.setChecked(false);
                     return;
                 }

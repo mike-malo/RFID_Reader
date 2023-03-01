@@ -73,6 +73,12 @@ public interface IBuilderAnalysis {
      */
     public List<UHFTagEntity> analysisFastModeTagInfoReceiveData(DataFrameInfo data);
     /**
+     *  解析快速模式盘点数据
+     *
+     * @return return
+     */
+    public List<UHFTagEntity> analysisFastModeTagInfoReceiveDataOld(DataFrameInfo data);
+    /**
      *  获取模块版本
      *
      * @return return
@@ -285,4 +291,9 @@ public interface IBuilderAnalysis {
     public byte[] makeSetBaudRate(int baudrate);
     public UHFReaderResult<Boolean> analysisSetBaudRateResultData(DataFrameInfo data);
 
+    public byte[] makeSetFrequencyPoint(int frequencyPoint);
+    public UHFReaderResult<Boolean> analysisSetFrequencyPointResultData(DataFrameInfo data);
+
+    public byte[] makeSetRFLink(int mode);
+    public UHFReaderResult<Boolean> analysisSetRFLinkResultData(DataFrameInfo data);
 }

@@ -6,13 +6,11 @@ import android.util.Log;
 import com.xlzn.hcpda.ModuleAPI;
 import com.xlzn.hcpda.uhf.interfaces.IUHFCheckCodeErrorCallback;
 import com.xlzn.hcpda.uhf.interfaces.IUHFProtocolAnalysis;
-import com.xlzn.hcpda.utils.CRCUtils;
 import com.xlzn.hcpda.utils.DataConverter;
 import com.xlzn.hcpda.utils.LoggerUtils;
 
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.concurrent.LinkedBlockingQueue;
 
 /****
  * 芯联模块
@@ -182,8 +180,6 @@ public class UHFProtocolAnalysisSLR extends UHFProtocolAnalysisBase implements I
         return null;
 
     }
-
-
 
     //增加解析后端命令数据
     protected void addData(DataFrameInfo dataFrameInfo){

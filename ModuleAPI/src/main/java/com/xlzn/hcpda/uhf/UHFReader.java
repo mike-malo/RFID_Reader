@@ -1,5 +1,9 @@
 package com.xlzn.hcpda.uhf;
 
+import static com.xlzn.hcpda.uhf.entity.UHFReaderResult.ResultCode.CODE_FAILURE;
+import static com.xlzn.hcpda.uhf.entity.UHFReaderResult.ResultCode.CODE_READER_NOT_CONNECTED;
+import static com.xlzn.hcpda.uhf.entity.UHFReaderResult.ResultCode.CODE_SUCCESS;
+
 import android.content.Context;
 
 import com.xlzn.hcpda.uhf.entity.SelectEntity;
@@ -15,11 +19,6 @@ import com.xlzn.hcpda.uhf.interfaces.IUHFReader;
 import com.xlzn.hcpda.uhf.interfaces.OnInventoryDataListener;
 import com.xlzn.hcpda.uhf.module.UHFReaderSLR;
 
-
-import static com.xlzn.hcpda.uhf.entity.UHFReaderResult.ResultCode.CODE_FAILURE;
-import static com.xlzn.hcpda.uhf.entity.UHFReaderResult.ResultCode.CODE_READER_NOT_CONNECTED;
-import static com.xlzn.hcpda.uhf.entity.UHFReaderResult.ResultCode.CODE_SUCCESS;
-
 public class UHFReader {
 
     private static UHFReader uhfReader=new UHFReader();
@@ -34,7 +33,8 @@ public class UHFReader {
     }
 
     /**
-     * 连接UHF读写器
+     *
+     * Connect the UHF reader
      * @param context
      * @return UHFReaderResult
      */
@@ -53,7 +53,8 @@ public class UHFReader {
     }
 
     /**
-     * 断开UHF读写器
+     *
+     * Disconnect the UHF reader
      * @return UHFReaderResult
      */
     public synchronized UHFReaderResult<Boolean> disConnect() {
@@ -65,8 +66,9 @@ public class UHFReader {
     }
 
     /***
-     * 开始盘点，暂时不开放
-     * @param selectEntity 盘点指定标签
+     *
+     *  Inventory of specified labels
+     * @param selectEntity
      * @return
      */
     public synchronized UHFReaderResult<Boolean> startInventory(SelectEntity selectEntity) {
@@ -86,7 +88,8 @@ public class UHFReader {
         return  reader.startInventory(selectEntity);
     }
     /***
-     * 开始盘点
+     *
+     * Start taking stock
      * @return UHFReaderResult
      */
     public synchronized UHFReaderResult<Boolean> startInventory() {
@@ -94,7 +97,8 @@ public class UHFReader {
     }
 
     /**
-     * 停止盘点
+     *
+     * stop inventory
      * @return UHFReaderResult
      */
     public synchronized UHFReaderResult<Boolean> stopInventory() {
@@ -105,8 +109,9 @@ public class UHFReader {
     }
 
     /**
-     * 开始单次盘点
-     * @param selectEntity 盘点指定标签
+     *
+     * Start a single inventory
+     * @param selectEntity Specifies the label. null indicates that no label is specified
      * @return UHFReaderResult
      */
     public UHFReaderResult<UHFTagEntity> singleTagInventory(SelectEntity selectEntity) {
@@ -125,7 +130,8 @@ public class UHFReader {
     }
 
     /**
-     * 单次盘点
+     *
+     * Start a single inventory
      * @return UHFReaderResult
      */
     public synchronized UHFReaderResult<UHFTagEntity> singleTagInventory() {
@@ -134,9 +140,9 @@ public class UHFReader {
 
 
 //TODO
-    /** 暂时不支持
-     * 设置盘点指定标签
-     * @param selectEntity 盘点指定标签
+    /**
+     *
+     * @param selectEntity
      * @return
      */
     public UHFReaderResult<Boolean> setInventorySelectEntity(SelectEntity selectEntity) {
@@ -144,8 +150,9 @@ public class UHFReader {
     }
 
     /**
-     * 设置盘点TID
-     * @param flag true:表示盘点tid    false:表示盘点epc
+     *
+     * Setting the count TID
+     * @param flag true:inventory tid    false:inventory epc
      * @return UHFReaderResult
      */
     public UHFReaderResult<Boolean> setInventoryTid(boolean flag){
@@ -157,7 +164,8 @@ public class UHFReader {
 
 
     /**
-     * 获取UHF读写器连接状态
+     *
+     * Gets UHF reader connection status
      * @return UHFReaderResult
      */
     public synchronized ConnectState getConnectState() {
@@ -168,7 +176,8 @@ public class UHFReader {
     }
 
     /**
-     * 获取UHF读写器版本
+     *
+     * Gets the UHF reader version
      * @return UHFReaderResult
      */
     public synchronized UHFReaderResult<UHFVersionInfo> getVersions() {
@@ -179,8 +188,8 @@ public class UHFReader {
     }
 
     /**
-     * 设置Session
-     * @param vlaue seesion枚举
+     * set Session
+     * @param vlaue
      * @return UHFReaderResult
      */
     public UHFReaderResult<Boolean> setSession(UHFSession vlaue) {
@@ -191,7 +200,7 @@ public class UHFReader {
     }
 
     /**
-     *  获取Session
+     *  get Session
      * @return UHFReaderResult
      */
     public UHFReaderResult<UHFSession> getSession() {
@@ -202,7 +211,7 @@ public class UHFReader {
     }
 
     /**
-     * 设置动态Target
+     * set Target
      * @param vlaue (0,1)  00:A->B   01:B->A
      * @return UHFReaderResult
      */
@@ -214,7 +223,7 @@ public class UHFReader {
     }
 
     /**
-     * 设置静态Target
+     * set static Target
      * @param vlaue (0,1)  00:A   01:B
      * @return UHFReaderResult
      */
@@ -226,8 +235,8 @@ public class UHFReader {
     }
 
     /**
-     * 获取动态Target
-     * @return   如果下标[0]:0:表示动态 下标[1]: 00:A->B  01:B->A;    如果下标[0]: 1表示静态 下标[1]:00:A   01:B
+     * get move Target
+     * @return
      */
     public UHFReaderResult<int[]> getTarget() {
         if(getConnectState() != ConnectState.CONNECTED){
@@ -237,8 +246,8 @@ public class UHFReader {
     }
 
     /**
-     * 设置盘点功耗模式
-     * @param InventoryMode （快速模式、省点模式） 默认上快速模式
+     *
+     * @param InventoryMode
      * @return UHFReaderResult
      */
     public UHFReaderResult<Boolean> setInventoryModeForPower(InventoryModeForPower InventoryMode) {
@@ -249,7 +258,8 @@ public class UHFReader {
     }
 
     /**
-     * 设置盘点数据回调
+     *
+     * Set the inventory data callback
      * @param onInventoryDataListener
      */
     public void setOnInventoryDataListener(OnInventoryDataListener onInventoryDataListener) {
@@ -257,12 +267,8 @@ public class UHFReader {
     }
 
     /**
-     * 设置频率
-     * @param  region 北美（902-928）	0x01
-     *       中国1（920-925）	0x06
-     *     欧频（865-867）	0x08
-     *     中国2（840-845）	0x0a
-     *     全频段（840-960）	0xff
+     *  set region
+
      * @return UHFReaderResult
      */
     public UHFReaderResult<Boolean> setFrequencyRegion(int region) {
@@ -273,12 +279,7 @@ public class UHFReader {
     }
 
     /**
-     * 获取频率
-     * @return 北美（902-928）	0x01
-     *       中国1（920-925）	0x06
-     *      欧频（865-867）	0x08
-     *      中国2（840-845）	0x0a
-     *     全频段（840-960）	0xff
+     * get region
      */
     public UHFReaderResult<Integer> getFrequencyRegion() {
         if(getConnectState() != ConnectState.CONNECTED){
@@ -288,7 +289,7 @@ public class UHFReader {
     }
 
     /**
-     * 获取温度
+     * get module temperature
      * @return UHFReaderResult
      */
     public UHFReaderResult<Integer> getTemperature() {
@@ -308,12 +309,12 @@ public class UHFReader {
      */
 
     /**
-     * 读标签
-     * @param password 密码
+     * read tag
+     * @param password 密码 password
      * @param membank    00：保留区  1：epc  2:tid   3：UER
      * @param address  起始地址(单位：字)
      * @param wordCount 数据长度(单位：字)
-     * @param selectEntity  指定标签，此参数为null表示不指定标签
+     * @param selectEntity  Specifies the label. null indicates that no label is specified
      * @return UHFReaderResult
      */
     public UHFReaderResult<String> read(String password,int membank,int address,int wordCount,SelectEntity selectEntity) {
@@ -332,13 +333,14 @@ public class UHFReader {
     }
 
     /**
-     *写数据
-     * @param password 密码
+     *
+     * write tag
+     * @param password password
      * @param membank   00：保留区  1：epc  2:tid   3：UER
-     * @param address 起始地址(单位：字)
-     * @param wordCount 数据长度(单位：字)
-     * @param data 要写的数据
-     * @param selectEntity 指定标签，此参数为null表示不指定标签
+     * @param address start address
+     * @param wordCount length
+     * @param data data
+     * @param selectEntity Specifies the label. null indicates that no label is specified
      * @return UHFReaderResult
      */
     public UHFReaderResult<Boolean> write(String password, int membank, int address, int wordCount, String data, SelectEntity selectEntity) {
@@ -357,9 +359,10 @@ public class UHFReader {
     }
 
     /**
-     * 销毁标签
-     * @param password 密码
-     * @param selectEntity  指定标签，此参数为null表示不指定标签
+     *
+     * kill tag
+     * @param password
+     * @param selectEntity  Specifies the label. null indicates that no label is specified
      * @return UHFReaderResult
      */
     public UHFReaderResult<Boolean> kill(String password, SelectEntity selectEntity) {
@@ -378,11 +381,12 @@ public class UHFReader {
     }
 
     /**
-     * 锁标签
-     * @param password 密码
-     * @param membankEnum 要锁带内存区
-     * @param actionEnum  要执行带操作
-     * @param selectEntity  指定标签，此参数为null表示不指定标签
+     *
+     * lock tag
+     * @param password
+     * @param membankEnum
+     * @param actionEnum
+     * @param selectEntity  指定标签，此参数为null表示不指定标签  Specifies the label. null indicates that no label is specified
      * @return UHFReaderResult
      */
     public UHFReaderResult<Boolean> lock(String password, LockMembankEnum membankEnum, LockActionEnum actionEnum, SelectEntity selectEntity) {
@@ -401,7 +405,8 @@ public class UHFReader {
     }
 
     /**
-     * 设置功率
+     *
+     * set power
      * @param power (5-33)
      * @return UHFReaderResult
      */
@@ -415,7 +420,8 @@ public class UHFReader {
 
 
     /**
-     * 获取功率
+     *
+     * get power
      * @return (5-33)
      */
     public UHFReaderResult<Integer> getPower() {
@@ -425,10 +431,7 @@ public class UHFReader {
         return reader.getPower();
     }
 
-    /**
-     * 获取模块型号
-     *
-     */
+
     public UHFReaderResult<String> getModuleType() {
         if(getConnectState() != ConnectState.CONNECTED){
             return new UHFReaderResult(CODE_READER_NOT_CONNECTED, UHFReaderResult.ResultMessage.READER_NOT_CONNECTED,false);
@@ -437,10 +440,7 @@ public class UHFReader {
         return new UHFReaderResult(0);
     }
 
-    /**
-     * 设置模块型号
-     *
-     */
+
     public UHFReaderResult<Boolean> setModuleType(String moduleType) {
         if(getConnectState() != ConnectState.CONNECTED){
             return new UHFReaderResult(CODE_READER_NOT_CONNECTED, UHFReaderResult.ResultMessage.READER_NOT_CONNECTED,false);
@@ -448,8 +448,17 @@ public class UHFReader {
         return reader.setModuleType(moduleType);
     }
 
+    public UHFReaderResult<Boolean> setFrequencyPoint(int point) {
+        if(getConnectState() != ConnectState.CONNECTED){
+            return new UHFReaderResult<Boolean>(CODE_READER_NOT_CONNECTED, UHFReaderResult.ResultMessage.READER_NOT_CONNECTED,false);
+        }
+        return reader.setFrequencyPoint(point);
+    }
+    public UHFReaderResult<Boolean> setRFLink(int mode) {
 
-
-
-
+        if(getConnectState() != ConnectState.CONNECTED){
+            return new UHFReaderResult<Boolean>(CODE_READER_NOT_CONNECTED, UHFReaderResult.ResultMessage.READER_NOT_CONNECTED,false);
+        }
+        return reader.setRFLink(mode);
+    }
 }

@@ -61,7 +61,8 @@ public class UHFReaderSLR implements IUHFReader {
         hcPowerCtrl.uhfPower(1);
         hcPowerCtrl.uhfCtrl(1);
         hcPowerCtrl.identityPower(1);
-        LoggerUtils.d(TAG,"供电-------2");
+        hcPowerCtrl.identityCtrl(1);
+        LoggerUtils.d(TAG,"供电-------7");
         //****************
         UHFReaderResult<UHFVersionInfo> verInfo = null;
         int baudrate = 115200;
@@ -75,20 +76,55 @@ public class UHFReaderSLR implements IUHFReader {
             }
             //*******获取版本号***************
             //发送激活模块的命令
-            SystemClock.sleep(300);
+            SystemClock.sleep(80);
             sendData(DataConverter.hexToBytes("FF00041D0B"));
-            SystemClock.sleep(300);
+            SystemClock.sleep(400);
             //获取版本号
             LoggerUtils.d(TAG, "获取版本号!");
             UHFProtocolAnalysisBase.DataFrameInfo dataFrameInfo = sendAndReceiveData(builderAnalysisSLR.makeGetVersionSendData());
             verInfo = builderAnalysisSLR.analysisVersionData(dataFrameInfo);
+            LoggerUtils.d(TAG, "唤醒模块----"+ verInfo.getResultCode());
+            SystemClock.sleep(200);
             if (verInfo.getResultCode() == UHFReaderResult.ResultCode.CODE_SUCCESS) {
-                if (verInfo.getData().getHardwareVersion().startsWith("31")||verInfo.getData().getHardwareVersion().startsWith("33")) {
+                if (verInfo.getData().getHardwareVersion().startsWith("31") || verInfo.getData().getHardwareVersion().startsWith("33")) {
                     builderAnalysisSLR = new BuilderAnalysisSLR_E710();
-                    LoggerUtils.d(TAG,"是E710啊----");
+                    LoggerUtils.d(TAG, "是E710啊----");
                     DeviceConfigManage.module_type = "E710";
                 }
+                hcPowerCtrl.identityPower(0);
+                hcPowerCtrl.identityCtrl(0);
                 break;
+            } else {
+                LoggerUtils.d(TAG, "获取版本号失败，打开另外一个串口");
+//                uhfConfig.setUhfUart("/dev/ttysWK1");
+                boolean result2 = UHFSerialPort.getInstance().open(uhfConfig.getUhfUart(), uhfProtocolAnalysisSLR, baudrate);
+                LoggerUtils.d(TAG, "打开串口=" + result2 + "  Uart=" + uhfConfig.getUhfUart() + "  baudrate=" + baudrate);
+                if (!result2) {
+                    //打开串口失败
+                    LoggerUtils.d(TAG, "打开串口失败!");
+                    return new UHFReaderResult(UHFReaderResult.ResultCode.CODE_OPEN_SERIAL_PORT_FAILURE, UHFReaderResult.ResultMessage.OPEN_SERIAL_PORT_FAILURE, false);
+                }
+                //*******获取版本号***************
+                //发送激活模块的命令
+                SystemClock.sleep(80);
+                sendData(DataConverter.hexToBytes("FF00041D0B"));
+                SystemClock.sleep(300);
+                //获取版本号
+                LoggerUtils.d(TAG, "获取版本号!");
+                UHFProtocolAnalysisBase.DataFrameInfo dataFrameInfo2 = sendAndReceiveData(builderAnalysisSLR.makeGetVersionSendData());
+                verInfo = builderAnalysisSLR.analysisVersionData(dataFrameInfo2);
+                SystemClock.sleep(200);
+                if (verInfo.getResultCode() == UHFReaderResult.ResultCode.CODE_SUCCESS) {
+                    if (verInfo.getData().getHardwareVersion().startsWith("31") || verInfo.getData().getHardwareVersion().startsWith("33")) {
+                        builderAnalysisSLR = new BuilderAnalysisSLR_E710();
+                        LoggerUtils.d(TAG, "是E710啊----");
+                        DeviceConfigManage.module_type = "E710";
+                    }
+                    break;
+                } else {
+                    hcPowerCtrl.uhfPower(0);
+                    hcPowerCtrl.uhfCtrl(0);
+                }
             }
             UHFSerialPort.getInstance().close();
         }
@@ -147,7 +183,8 @@ public class UHFReaderSLR implements IUHFReader {
         //模块下电
         hcPowerCtrl.uhfPower(0);
         hcPowerCtrl.uhfCtrl(0);
-        hcPowerCtrl.identityPower(0);
+//        hcPowerCtrl.identityPower(0);
+        LoggerUtils.d("CHLOG","----------------------模块下电");
         UHFSerialPort.getInstance().close();
         if (iuhfReader != null) {
             ((UHFReaderBase) iuhfReader).setConnectState(ConnectState.DISCONNECT);
@@ -285,6 +322,16 @@ public class UHFReaderSLR implements IUHFReader {
     @Override
     public UHFReaderResult<Boolean> setBaudRate(int baudRate) {
         return iuhfReader.setBaudRate(baudRate);
+    }
+
+    @Override
+    public UHFReaderResult<Boolean> setFrequencyPoint(int baudRate) {
+        return iuhfReader.setFrequencyPoint(baudRate);
+    }
+
+    @Override
+    public UHFReaderResult<Boolean> setRFLink(int mode) {
+        return iuhfReader.setRFLink(mode);
     }
 
     //发送数据到模块

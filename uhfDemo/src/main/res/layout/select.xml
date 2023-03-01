@@ -15,7 +15,7 @@
         android:id="@+id/tvMembank"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="区        域:" />
+        android:text="@string/areas" />
     <Spinner
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toRightOf="@id/tvMembank"
@@ -36,7 +36,7 @@
         android:id="@+id/tvSelectStartAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="起始地址:" />
+        android:text="@string/start_addr" />
 
     <EditText
         android:id="@+id/etSelectAddress"
@@ -53,7 +53,7 @@
         app:layout_constraintTop_toBottomOf="@id/spSelectMembank"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toRightOf="@id/etSelectAddress"
-        android:text="（单位：bit）"
+        android:text="（bit）"
         android:id="@+id/tvSelectAddresUnit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -66,7 +66,7 @@
         android:id="@+id/tvLen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="数据长度:" />
+        android:text="@string/length" />
 
     <EditText
         android:id="@+id/etSelectLen"
@@ -85,7 +85,7 @@
         app:layout_constraintTop_toBottomOf="@id/etSelectAddress"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toRightOf="@id/etSelectLen"
-        android:text="（单位：bit）"
+        android:text="（bit）"
         android:id="@+id/tvSelectLenUnit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -99,7 +99,7 @@
         android:id="@+id/tvData"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="数        据:" />
+        android:text="@string/datas" />
     <EditText
         app:layout_constraintTop_toBottomOf="@id/etSelectLen"
         app:layout_constraintRight_toRightOf="parent"

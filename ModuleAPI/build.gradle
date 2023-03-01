@@ -9,8 +9,8 @@ android {
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 31
-        versionCode 2
-        versionName "1.0.4"
+        versionCode 3
+        versionName "1.0.5"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
         externalNativeBuild {
@@ -45,7 +45,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             android.libraryVariants.all { variant ->
                 variant.outputs.all {
-                    outputFileName = "HC_${versionCodeA()}_${releaseTime()}.aar"
+                    outputFileName = "HCUHF_${versionCodeA()}_${releaseTime()}.aar"
                 }
             }
             buildConfigField("int", "API_VERSION", "${releaseTime()}")
@@ -85,6 +85,7 @@ dependencies {
     implementation files('libs\\IGLBarDecoder.jar')
     implementation files('libs\\jxl.jar')
     implementation files('libs\\xUtils-2.5.5.jar')
+    implementation files('libs\\classes.jar')
 }
 
 static def releaseTime() {

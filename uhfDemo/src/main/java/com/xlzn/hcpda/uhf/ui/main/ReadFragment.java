@@ -1,10 +1,13 @@
 package com.xlzn.hcpda.uhf.ui.main;
 
+import static com.xlzn.hcpda.uhf.R.string.tips;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +19,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import com.xlzn.hcpda.uhf.MainActivity;
 import com.xlzn.hcpda.uhf.R;
@@ -24,9 +26,7 @@ import com.xlzn.hcpda.uhf.UHFReader;
 import com.xlzn.hcpda.uhf.entity.SelectEntity;
 import com.xlzn.hcpda.uhf.entity.UHFReaderResult;
 
-import static com.xlzn.hcpda.uhf.R.string.tips;
-
-public class ReadFragment extends Fragment implements View.OnClickListener {
+public class ReadFragment extends MyFragment implements View.OnClickListener {
 
     private MainActivity mainActivity;
     private EditText etAddressRead;
@@ -45,6 +45,16 @@ public class ReadFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
+    public void onKeyDownTo(int keycode) {
+        super.onKeyDownTo(keycode);
+        if (keycode == 287 || keycode == 286) {
+            read();
+            Log.e("TAG", "onKeyDownTo: read"  );
+        }
+
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mainActivity = (MainActivity) getActivity();
@@ -58,44 +68,14 @@ public class ReadFragment extends Fragment implements View.OnClickListener {
         btnRead.setOnClickListener(this);
         cbSelectRead.setOnClickListener(this);
         spMembankRead.setSelection(1);
+
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnRead:
-                String password = etPWDRead.getHint().toString();
-                if (!TextUtils.isEmpty(etPWDRead.getText())) {
-                    password = etPWDRead.getText().toString();
-                    if (password.length() != 8) {
-                        Toast.makeText(mainActivity, tips, Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                }
-                int address = Integer.parseInt(etAddressRead.getHint().toString());
-                if (!TextUtils.isEmpty(etAddressRead.getText())) {
-                    address = Integer.parseInt(etAddressRead.getText().toString());
-                }
-                int wordCount = Integer.parseInt(etLenRead.getHint().toString());
-                if (!TextUtils.isEmpty(etLenRead.getText())) {
-                    wordCount = Integer.parseInt(etLenRead.getText().toString());
-                }
-
-                int membank = spMembankRead.getSelectedItemPosition();
-                UHFReaderResult<String> readerResult = null;
-                if (cbSelectRead.isChecked()) {
-                    //查找指定标签
-                    readerResult = UHFReader.getInstance().read(password, membank, address, wordCount, selectEntity);
-                } else {
-                    readerResult = UHFReader.getInstance().read(password, membank, address, wordCount, null);
-                }
-                if (readerResult.getResultCode() != UHFReaderResult.ResultCode.CODE_SUCCESS) {
-                    etDataRead.setText("");
-                    Toast.makeText(mainActivity, R.string.fail, Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                Toast.makeText(mainActivity, R.string.success, Toast.LENGTH_SHORT).show();
-                etDataRead.setText(readerResult.getData());
+              read();
                 break;
             case R.id.cbSelectRead:
                 if (cbSelectRead.isChecked()) {
@@ -103,6 +83,41 @@ public class ReadFragment extends Fragment implements View.OnClickListener {
                 }
                 break;
         }
+    }
+
+    public void read() {
+        String password = etPWDRead.getHint().toString();
+        if (!TextUtils.isEmpty(etPWDRead.getText())) {
+            password = etPWDRead.getText().toString();
+            if (password.length() != 8) {
+                Toast.makeText(mainActivity, tips, Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
+        int address = Integer.parseInt(etAddressRead.getHint().toString());
+        if (!TextUtils.isEmpty(etAddressRead.getText())) {
+            address = Integer.parseInt(etAddressRead.getText().toString());
+        }
+        int wordCount = Integer.parseInt(etLenRead.getHint().toString());
+        if (!TextUtils.isEmpty(etLenRead.getText())) {
+            wordCount = Integer.parseInt(etLenRead.getText().toString());
+        }
+
+        int membank = spMembankRead.getSelectedItemPosition();
+        UHFReaderResult<String> readerResult = null;
+        if (cbSelectRead.isChecked()) {
+            //查找指定标签
+            readerResult = UHFReader.getInstance().read(password, membank, address, wordCount, selectEntity);
+        } else {
+            readerResult = UHFReader.getInstance().read(password, membank, address, wordCount, null);
+        }
+        if (readerResult.getResultCode() != UHFReaderResult.ResultCode.CODE_SUCCESS) {
+            etDataRead.setText("");
+            Toast.makeText(mainActivity, R.string.fail, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Toast.makeText(mainActivity, R.string.success, Toast.LENGTH_SHORT).show();
+        etDataRead.setText(readerResult.getData());
     }
 
     private void showDialog(final Context mainActivity) {
@@ -183,5 +198,7 @@ public class ReadFragment extends Fragment implements View.OnClickListener {
             }
         });
     }
+
+
 
 }

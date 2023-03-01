@@ -17,6 +17,7 @@
     <string name="check_tag">check_tag</string>
     <string name="password">password:</string>
     <string name="destory">destory</string>
+    <string name="get_session"  >get_Session</string>
     <string name="lock_area">lock_area:</string>
     <string name="lock_type">lock_type:</string>
     <string name="lock">lock</string>
@@ -43,12 +44,33 @@
     <string name="no">Data cannot be null!</string>
     <string name="nono">Data and length do not match!</string>
     <string name="start_connect">connect…</string>
-    <string name="firmware_ver">firmware_ver:</string>
-    <string name="temperature">temperature:</string>
-    <string name="api">API_ver:</string>
-    <string name="app">APP_ver:</string>
+    <string name="firmware_ver">firmware_ver</string>
+    <string name="temperature">temperature</string>
+    <string name="api">API_ver</string>
+    <string name="app">APP_ver</string>
     <string name="temperaturem">temperature</string>
     <string name="firm">firm_ver</string>
+    <string name="export">export</string>
+    <string name="tiplen">The password must contain 4 bytes of hexadecimal data!</string>
+    <string name="killerr">err!</string>
+    <string name="successKill">success!</string>
+    <string name="selectTag">selectTag</string>
+    <string name="sures">sure</string>
+    <string name="cancles">cancle</string>
+    <string name="datanonull">data no null!</string>
+    <string name="nolong">data length no !</string>
+    <string name="stop_time">stop_time:</string>
+    <string name="s">s</string>
+    <string name="set_time">set_time</string>
+    <string name="areas">area:</string>
+    <string name="start_addr">start_address:</string>
+    <string name="length">data_length:</string>
+    <string name="datas">data:</string>
+    <string name="set_point">set point</string>
+    <string name="get_point">get point</string>
+    <string name="set_rf_link">Link set</string>
+    <string name="get_rf_link">Link get</string>
+    <string name="write_zh">中文写入</string>
 
     <array name="arrFrequencyBand">
         <item>USA（902-928）</item>
