@@ -93,9 +93,9 @@ static def releaseTime() {
 }
 
 static def versionName() {
-    "\"v1.0.4\""
+    "\"v1.0.5\""
 }
 
 static def versionCodeA() {
-    "v1.0.4"
+    "v1.0.5"
 }

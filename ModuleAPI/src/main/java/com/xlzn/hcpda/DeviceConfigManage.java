@@ -54,7 +54,7 @@ public class DeviceConfigManage {
 //            LoggerUtils.d(TAG, " 未知设备，设置WK0");
 //        }
         uhfUart = "/dev/ttysWK0";
-        LoggerUtils.d(TAG, " API 版本" + BuildConfig.API_VERSION);
+//        LoggerUtils.d(TAG, " API 版本" + BuildConfig.API_VERSION);
         LoggerUtils.d(TAG, " 获取最终串口" + uhfUart);
     }
 

@@ -20,24 +20,24 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
--keep interface com.xlzn.hcpda.uhf.interfaces.I** { *; }
--keep class com.xlzn.hcpda.uhf.UHFReader {*; }
--keep class com.xlzn.hcpda.uhf.entity.SelectEntity {*; }
--keep class com.xlzn.hcpda.uhf.entity.UHFReaderResult {*; }
--keep class com.xlzn.hcpda.uhf.entity.UHFTagEntity {*; }
--keep class com.xlzn.hcpda.uhf.entity.UHFVersionInfo {*; }
--keep class com.xlzn.hcpda.uhf.entity.UHFReaderResult$*{
+-keep interface com.xlzn.hcpda.uhf_test.interfaces.I** { *; }
+-keep class com.xlzn.hcpda.uhf_test.UHFReader {*; }
+-keep class com.xlzn.hcpda.uhf_test.entity.SelectEntity {*; }
+-keep class com.xlzn.hcpda.uhf_test.entity.UHFReaderResult {*; }
+-keep class com.xlzn.hcpda.uhf_test.entity.UHFTagEntity {*; }
+-keep class com.xlzn.hcpda.uhf_test.entity.UHFVersionInfo {*; }
+-keep class com.xlzn.hcpda.uhf_test.entity.UHFReaderResult$*{
     <fields>;
     <methods>;
  }
 
 # 枚举类不能被混淆
--keep enum com.xlzn.hcpda.uhf.enums.LockMembankEnum{*;}
--keep enum com.xlzn.hcpda.uhf.enums.InventoryModeForPower{*;}
--keep enum com.xlzn.hcpda.uhf.enums.LockActionEnum{*;}
--keep enum com.xlzn.hcpda.uhf.enums.LockMembankEnum{*;}
--keep enum com.xlzn.hcpda.uhf.enums.UHFSession{*;}
--keep interface com.xlzn.hcpda.uhf.interfaces.OnInventoryDataListener{*;}
+-keep enum com.xlzn.hcpda.uhf_test.enums.LockMembankEnum{*;}
+-keep enum com.xlzn.hcpda.uhf_test.enums.InventoryModeForPower{*;}
+-keep enum com.xlzn.hcpda.uhf_test.enums.LockActionEnum{*;}
+-keep enum com.xlzn.hcpda.uhf_test.enums.LockMembankEnum{*;}
+-keep enum com.xlzn.hcpda.uhf_test.enums.UHFSession{*;}
+-keep interface com.xlzn.hcpda.uhf_test.interfaces.OnInventoryDataListener{*;}
 
 
 # 保留所有的本地native方法不被混淆

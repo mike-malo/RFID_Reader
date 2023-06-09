@@ -19,15 +19,15 @@
             android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             app:subtitleTextColor="#FFFF00"
-            app:title="@string/app_name"
+            app:title="RFID扫描"
             app:titleTextColor="#FFFFFF" />
 
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary" />
+<!--        <com.google.android.material.tabs.TabLayout-->
+<!--            android:id="@+id/tabs"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:background="?attr/colorPrimary" />-->
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.viewpager.widget.ViewPager

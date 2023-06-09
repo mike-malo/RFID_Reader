@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">超高频测试Demo-v1.6</string>
+    <string name="app_name">超高频测试Demo-v1.7_0</string>
     <array name="arrPower">
         <item>"5"</item>
         <item>"6"</item>

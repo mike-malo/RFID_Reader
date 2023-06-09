@@ -4,7 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Environment;
 import android.util.Log;
 
-import com.xlzn.hcpda.uhf.entity.UHFTagEntity;
+import com.xlzn.hcpda.uhf_test.entity.UHFTagEntity;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
